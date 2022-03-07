@@ -10,7 +10,7 @@ script:
 
 aftre_sucess:
   - docker build -t akoutsou/multi-client ./client
-  - docker build -t akoutsou/multi-nginx ./ngnix
+  - docker build -t akoutsou/multi-nginx ./nginx
   - docker build -t akoutsou/multi-server ./server
   - docker build -t akoutsou/multi-worker ./worker
   # Login in to the docker cli
