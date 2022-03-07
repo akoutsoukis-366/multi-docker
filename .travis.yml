@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t akoutsou/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true akoutsou/react-test npm test
+
+aftre_sucess:
+  - docker build -t akoutsou/multi-client ./client
+  - docker build -t akoutsou/multi-nginx ./ngnix
+  - docker build -t akoutsou/multi-server ./server
+  - docker build -t akoutsou/multi-worker ./worker
+  # Login in to the docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take images and push to docker hub
+  - docker push akoutsou/multi-client
+  - docker push akoutsou/multi-nginx
+  - docker push akoutsou/multi-server
+  - docker push akoutsou/multi-worker
+
